@@ -130,54 +130,6 @@ Fields: `ts` (ISO‑8601 UTC), `lvl` (`TRACE`…`ERROR`), `scope` (module/functi
 
 ---
 
-## Appendix A – schema patch for `roles.schema.json`
-
-Below is the minimal diff that enforces presence of `value` inside objects of \`\`:
-
-```diff
-   "values": {
--    "items": {
--      "anyOf": [
--        { "type": "string" },
--        {
--          "type": "object",
--          "properties": {
--            "value": { "type": "string" },
--            "instruction": { "type": "string" }
--          }
--        }
--      ]
--    }
-+    "items": {
-+      "anyOf": [
-+        { "type": "string" },
-+        {
-+          "type": "object",
-+          "properties": {
-+            "value": { "type": "string" },
-+            "description": { "type": "string" },
-+            "instruction": { "type": "string" }
-+          },
-+          "required": ["value"],
-+          "additionalProperties": false
-+        }
-+      ]
-+    }
-   }
-```
-
-If you prefer a full standalone file, copy your current `roles.schema.json`, apply the hunk above, bump `$id`/version and you’re done.
-
----
-
-### Things intentionally **unchanged**
-
-* **Name collisions** – global & local files must keep distinct role names. This avoids hidden precedence rules.
-* **Flattened preset hierarchy** – only direct parents are stored; deeper ancestry is resolvable at runtime.
-* **Runtime value validation** – TUI already forces users to pick from the presented list via arrow keys; extra schema checks here would be redundant.
-
----
-
 ## License
 
 MIT – see LICENSE for details.
